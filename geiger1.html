@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container {
+  width: 300px;
+  height: 150px;
+  border: 6px solid Black;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.geiger-container{
+  width: 300px;
+  height: auto;
+  border: 8px solid Black;
+  color: Black;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8bf28;
+  border-radius: 20px;
+}
+
+.geiger-image{
+   width: 250px;
+   background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Radiation_warning_symbol.svg/600px-Radiation_warning_symbol.svg.png);
+}
+
+.escolha-fonte, .escolha-impar-par, .escolha-tempo {
+  width: 300px;
+  height: auto;
+  display: block;
+  font-size: 20px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow:hidden;
+  align-items: center;
+  justify-content:center;
+  margin-bottom: 5px;
+}
+p {
+  text-align: right;
+  font-size: 16px;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  margin-right: 3px;
+}
+button {
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 5px;
+  color: PapayaWhip;
+  background-color: #04AA6D;
+  border-style: double;
+  border-radius: 40%;
+}
+h1 {
+	text-align: center;
+  font-size: 25px;
+}
+h2 {
+	text-align: center;
+	font-size: 50px;
+  margin-top: -5px;
+  margin-bottom: -1px;
+}
+</style>
+</head>
+<body>
+
+<div class="geiger-container">
+  <h1> Simulador Geiger </h1>
+
+  <div class="column">
+    <div class="container">
+      <p id="time"> --- </p>
+    	<h2 id="count"> - </h2>
+      <p id="tema"> --- </p>
+    </div>
+  </div>
+
+  <div class="column">
+    <h2> Escolha Ímpar ou Par </h2>
+    <div class="escolha-impar-par">
+      <input type="radio" name="parity" value="impar">Ímpar</input> <br>
+      <input type="radio" name="parity" value="par" checked="checked">Par</input>
+    </div>
+  </div>
+
+  <div class="column">
+    <h2> Escolha o Tempo (1 a 10 segundos) </h2>
+    <div class="escolha-tempo">
+      <input type="number" id="tempoEscolhido" min="1" max="10" value="5">
+    </div>
+  </div>
+
+  <div class="column">
+    <button onclick="start()">Iniciar</button>
+    <button onclick="stop()">Parar</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/poisson-process/dist/poisson-process.min.js"></script>
+
+<script>
+    var rad = 0;
+    var p = 0;
+    var crono = 0;
+    var cronot = 0;
+    var cpm = 0;
+
+    function start() {
+        rad = 0; // Reset the counter
+        var tempoEscolhido = parseInt(document.getElementById("tempoEscolhido").value);
+
+        // Start the Geiger simulation with poisson process
+        p = poissonProcess.create(1000, function () {
+            rad += 1;
+            document.getElementById("count").innerHTML = rad;
+        });
+        p.start();
+
+        crono = setTimeout(function() {
+            stop();
+            verificarTema();
+        }, tempoEscolhido * 1000);
+    }
+
+    function stop() {
+        if (p) {
+            p.stop();
+        }
+        clearTimeout(crono);
+    }
+
+    function verificarTema() {
+        var paridadeEscolhida = document.querySelector('input[name="parity"]:checked').value;
+        var tema = rad % 2 === 0 ? "Radiação" : "Radioatividade";
+        var resultado = (rad % 2 === 0 && paridadeEscolhida === "par") || (rad % 2 !== 0 && paridadeEscolhida === "impar") ? "Correto" : "Incorreto";
+        document.getElementById("tema").innerHTML = tema + " - " + resultado;
+    }
+</script>
+
+</body>
+</html>

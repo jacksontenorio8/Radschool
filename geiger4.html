@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container {
+  width: 300px;
+  height: 150px;
+  border: 6px solid Black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  margin: auto;
+}
+.geiger-container {
+  width: 300px;
+  height: auto;
+  border: 8px solid Black;
+  color: Black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8bf28;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.geiger-image {
+  width: 150px;
+  text-align: center;
+  margin: auto;
+}
+
+.escolha-tempo {
+  width: 300px;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 65px;
+  height: 65px;
+  text-align: center;
+  font-size: 20px;
+  margin: 5px;
+  color: PapayaWhip;
+  background-color: #04AA6D;
+  border-style: double;
+  border-radius: 40%;
+}
+
+h1 {
+  text-align: center;
+  font-size: 25px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 100px;
+  margin-top: -5px;
+  margin-bottom: -1px;
+}
+
+.start-stop-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.start-stop-buttons button {
+  background-color: Black;
+  margin: 0 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="geiger-container">
+  <h1>CONTADOR GEIGER</h1>
+
+  <div class="container">
+    <p id="time"> --- </p>
+  	<h2 id="count"> - </h2>
+    <p id="tema"> --- </p>
+  </div>
+
+  <div class="escolha-tempo">
+    <button onclick="start(1)">1s</button>
+    <button onclick="start(2)">2s</button>
+    <button onclick="start(3)">3s</button>
+    <button onclick="start(4)">4s</button>
+    <button onclick="start(5)">5s</button>
+    <button onclick="start(6)">6s</button>
+    <button onclick="start(7)">7s</button>
+    <button onclick="start(8)">8s</button>
+    <button onclick="start(9)">9s</button>
+    <button onclick="start(10)">10s</button>
+  </div>
+
+  <div class="start-stop-buttons">
+    <button onclick="inicio()">Start</button>
+    <button onclick="fim()">Stop</button>
+  </div>
+
+  <div class="geiger-image">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Radiation_warning_symbol.svg/600px-Radiation_warning_symbol.svg.png" style="width:150px;">
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/poisson-process/dist/poisson-process.min.js"></script>
+
+<script>
+  var rad = 0;
+  var p = 0;
+  var crono = 0;
+  var countdown = null;
+
+  function inicio() {
+    // Start without countdown, reset the count
+    rad = 0; 
+    document.getElementById("count").innerHTML = "-";
+    document.getElementById("tema").innerHTML = "---";
+
+    // Start Geiger counter
+    p = poissonProcess.create(1000, function () {
+      rad += 1;
+      document.getElementById("count").innerHTML = rad;
+      beep();
+    });
+    p.start();
+  }
+
+  function fim() {
+    // Stop Geiger counter and countdown
+    if (p) p.stop();
+    clearTimeout(countdown);
+    document.getElementById("time").innerHTML = "---";
+    verificarTema();
+  }
+
+  function start(tempoEscolhido) {
+    inicio(); // Start Geiger
+    countdown = setTimeout(function() {
+      fim();
+    }, tempoEscolhido * 1000);
+    document.getElementById("time").innerHTML = tempoEscolhido + "s";
+  }
+
+  function verificarTema() {
+    var tema = rad % 2 === 0 ? "Radiação" : "Radioatividade";
+    document.getElementById("tema").innerHTML = "Tema: " + tema;
+  }
+
+  function beep() {
+    var snd = new Audio("data:audio/wav;base64,UklGRnwAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YVgAAAAAAEsAKQFlAooD+wMhA5cAZvwY98rx/+1r7Y/xZ/sUC7wfgTfIT5NlBXbcftx+BXaTZchPgTe8HxQLZ/uP8Wvt/+3K8Rj3ZvyXACED+wOKA2UCKQFLAAAA");
+    snd.play();
+  }
+
+</script>
+
+</body>
+</html>
