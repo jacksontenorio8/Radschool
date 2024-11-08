@@ -1,29 +1,27 @@
-const int botaoPin = 14;  
-const int circuitoPin = 27; 
+//Câmara de ionização em modo de descarga
+
+usingned long pulse = 0;
 
 void setup() {
   
-  pinMode(botaoPin, INPUT_PULLUP);
-  
-  
-  pinMode(circuitoPin, OUTPUT);
+  pinMode(8, OUTPUT);
+  digitalWrite(8, HIGH); //Configuração alta no corpo da câmara
+  Serial.begin(115200); //Comunicação serial
 
-
-  digitalWrite(circuitoPin, LOW);
 }
 
 void loop() {
   
-  int estadoBotao = digitalRead(botaoPin);
+  pinMode(11, OUTPUT); //Preparação para alta
+  digitalWrite(11, LOW); //Atraso de descarga (250)
+  pulse(0); //Definir comprimento de pulso para zero
+  pinMode(11, INPUT);//Início da carga
   
-  
-  if (estadoBotao == LOW) {
-    digitalWrite(circuitoPin, HIGH); 
-  } else {
-    digitalWrite(circuitoPin, LOW); 
+do {
+  pulse++;
   }
-  
-  
-  delay(50);
+  while (digitalRead(11)== LOW); //Estamos
+carregando até que o Alto seja alcançado
+  Serial.println(pulse); //Resultado enviado via serial
+  delay(250);
 }
-
