@@ -1,9 +1,29 @@
-void setup() {
-  // put your setup code here, to run once:
+const int botaoPin = 14;  
+const int circuitoPin = 27; 
 
+void setup() {
+  
+  pinMode(botaoPin, INPUT_PULLUP);
+  
+  
+  pinMode(circuitoPin, OUTPUT);
+
+
+  digitalWrite(circuitoPin, LOW);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  
+  int estadoBotao = digitalRead(botaoPin);
+  
+  
+  if (estadoBotao == LOW) {
+    digitalWrite(circuitoPin, HIGH); 
+  } else {
+    digitalWrite(circuitoPin, LOW); 
+  }
+  
+  
+  delay(50);
 }
+
