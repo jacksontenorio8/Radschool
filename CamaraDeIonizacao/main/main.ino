@@ -1,7 +1,7 @@
 //Câmara de ionização em modo de descarga
 
-usingned long pulse = 0;
-
+usigned long pulse = 0;
++
 void setup() {
   
   pinMode(8, OUTPUT);
