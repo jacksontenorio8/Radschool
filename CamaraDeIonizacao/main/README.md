@@ -79,11 +79,6 @@ Criar uma câmara de ionização utilizando areia monazítica como fonte radioat
 
 ---
 
-## Exemplo de Funcionamento
-(Adicione aqui uma imagem ou vídeo do sistema em funcionamento.)
-
----
-
 ## Futuras Melhorias
 - Adicionar um sistema de armazenamento dos dados em um cartão SD.
 - Implementar conectividade Wi-Fi para monitoramento remoto.
