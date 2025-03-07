@@ -11,10 +11,10 @@ Criar uma câmara de ionização utilizando areia monazítica como fonte radioat
 
 ## Componentes Utilizados
 ### Eletrônicos
-- 1 ESP32
+- 1 Arduino
 - 1 Display Nokia 5110
 - 1 Microchave push button (6 polos)
-- 2 Baterias de 9V
+- 1 Baterias de 9V
 - 1 Capacitor de 100 nF
 - 1 Resistor de 100 kΩ
 - 1 Resistor de 47 kΩ
